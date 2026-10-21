@@ -59,7 +59,7 @@ Each movie has these fields:
 
 | Field | Type | Description |
 |---|---|---|
-| id | number | Unique ID, created by the server |
+| id | number | Unique ID |
 | title | string | Name of the movie |
 | genre | string | Movie genre |
 | year | number | Release year |
