@@ -35,3 +35,66 @@ let movies = [
     watched: false,
   },
 ];
+
+const getAllMovies = (req, res) => {
+  res.json(movies);
+};
+
+const getMovieById = (req, res) => {
+  const movie = movies.find((item) => item.id === Number(req.params.id));
+
+  if (!movie) {
+    return res.status(404).json({ message: "Movie not found" });
+  }
+
+  res.json(movie);
+};
+
+const createMovie = (req, res) => {
+  const movie = {
+    ...req.body,
+    id: movies.reduce((maxId, item) => Math.max(maxId, item.id), 0) + 1,
+  };
+
+  movies.push(movie);
+  res.status(201).json(movie);
+};
+
+const updateMovie = (req, res) => {
+  const movieIndex = movies.findIndex(
+    (item) => item.id === Number(req.params.id),
+  );
+
+  if (movieIndex === -1) {
+    return res.status(404).json({ message: "Movie not found" });
+  }
+
+  movies[movieIndex] = {
+    ...movies[movieIndex],
+    ...req.body,
+    id: movies[movieIndex].id,
+  };
+
+  res.json(movies[movieIndex]);
+};
+
+const deleteMovie = (req, res) => {
+  const movieIndex = movies.findIndex(
+    (item) => item.id === Number(req.params.id),
+  );
+
+  if (movieIndex === -1) {
+    return res.status(404).json({ message: "Movie not found" });
+  }
+
+  const [deletedMovie] = movies.splice(movieIndex, 1);
+  res.json(deletedMovie);
+};
+
+module.exports = {
+  getAllMovies,
+  getMovieById,
+  createMovie,
+  updateMovie,
+  deleteMovie,
+};
